@@ -31,9 +31,7 @@ tabview.add("About")
 # Optionally set the default selected tab
 tabview.set("Home")
 
-# Add widgets to the "Home" tab
-home_label = ctk.CTkLabel(tabview.tab("Home"), text="Welcome!")
-home_label.pack(pady=10)
+
 
 # Add widgets to the "Settings" tab
 settings_label = ctk.CTkLabel(
@@ -145,7 +143,7 @@ def gererateCode():
     # Import Logic here to avoid circular imports during module import
     import Logic
     # Pass shooterTabs into the logic call
-    Logic.print_logic_info(shooterTabs)
+    Logic.print_logic_info(shooterTabs, projectName=input_ProjectName.get())
 
 
 def climberTopEntry(climberNum):
@@ -193,6 +191,11 @@ def SpeedEntry(tabName):
     entry.pack(pady=10)
 
 
+#Home Tab
+
+input_ProjectName = ctk.CTkEntry(tabview.tab("Home"), placeholder_text="Project Name")
+input_ProjectName.pack(pady=10)
+
 
 # Create a button on home tab
 button_NewShooter = ctk.CTkButton(
@@ -236,6 +239,8 @@ button_Controls = ctk.CTkButton(
     master=tabview.tab("Home"), text="Controls", command=newControlsTab
 )
 button_Controls.pack(pady=20)
+
+
 
 
 # Run the application when executed as a script (prevents starting the GUI on import)
