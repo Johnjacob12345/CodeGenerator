@@ -1,4 +1,10 @@
+import code
+from PIL import Image
 import customtkinter as ctk
+from tkinter import ttk
+
+# Import Logic only when needed to avoid circular imports at module import time
+# (we'll import it inside gererateCode)
 
 # Create TabList
 shooterTabs = []
@@ -11,7 +17,7 @@ ctk.set_default_color_theme("blue")  # Options: "blue", "green", "dark-blue"
 # Create the main application window
 app = ctk.CTk()
 app.title("FRC Code Generator")
-app.geometry("800x700")
+app.geometry("1000x900")
 
 # Create a Tabview widget
 tabview = ctk.CTkTabview(app, width=480, height=250, corner_radius=10)
@@ -90,9 +96,56 @@ def newAgitatorTab():
     new_tab_label = ctk.CTkLabel(tabview.tab("Agitator"), text="Agitator Tab Content")
     new_tab_label.pack(pady=10)
 
+def newControlsTab():
+    tabview.add("Controls")
+
+
+    driver_label = ctk.CTkLabel(tabview.tab("Controls"), text="Driver Controller")
+    driver_label.pack(pady=10)
+    # Load image using PIL
+    pil_image = Image.open("Controller.png")  # Replace with your image path
+
+    # Create a CTkImage (can handle light/dark mode automatically)
+    ctk_image = ctk.CTkImage(light_image=pil_image, size=(1004, 623))
+
+    # Display the image in a label inside tab2
+    image_label = ctk.CTkLabel(tabview.tab("Controls"), image=ctk_image, text="")  # text="" hides text
+    image_label.pack(pady=20)
+
+    operator_label = ctk.CTkLabel(tabview.tab("Controls"), text="Operator Controller")
+    operator_label.pack(pady=10)
+        # Load image using PIL
+    pil_image = Image.open("Controller.png")  # Replace with your image path
+
+    # Create a CTkImage (can handle light/dark mode automatically)
+    ctk_image = ctk.CTkImage(light_image=pil_image, size=(1004, 623))
+
+    # Display the image in a label inside tab2
+    image_label = ctk.CTkLabel(tabview.tab("Controls"), image=ctk_image, text="")  # text="" hides text
+    image_label.pack(pady=20)
+
+    comboboxLB = ctk.CTkComboBox(tabview.tab("Controls"), values=["None", "option 2"],
+                                     )
+    comboboxLB.set("None")
+    comboboxLB.place(x=80, y=147)  # Position over image
+
+    comboboxLT = ctk.CTkComboBox(tabview.tab("Controls"), values=["None", "option 2"],
+                                     )
+    comboboxLT.set("None")
+    comboboxLT.place(x=80, y=200)  # Position over image
+
+    comboboxLUpDown = ctk.CTkComboBox(tabview.tab("Controls"), values=["None", "option 2"],
+                                     )
+    comboboxLUpDown.set("None")
+    comboboxLUpDown.place(x=80, y=147)  # Position over image
+
 
 def gererateCode():
     print("Generating code...")
+    # Import Logic here to avoid circular imports during module import
+    import Logic
+    # Pass shooterTabs into the logic call
+    Logic.print_logic_info(shooterTabs)
 
 
 def climberTopEntry(climberNum):
@@ -179,6 +232,12 @@ button_Generate = ctk.CTkButton(
 )
 button_Generate.pack(pady=20)
 
+button_Controls = ctk.CTkButton(
+    master=tabview.tab("Home"), text="Controls", command=newControlsTab
+)
+button_Controls.pack(pady=20)
 
-# Run the application
-app.mainloop()
+
+# Run the application when executed as a script (prevents starting the GUI on import)
+if __name__ == "__main__":
+    app.mainloop()
