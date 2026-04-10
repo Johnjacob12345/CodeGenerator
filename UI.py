@@ -2,6 +2,7 @@ import code
 from PIL import Image
 import customtkinter as ctk
 from tkinter import ttk
+from tkinter import messagebox
 
 # Import Logic only when needed to avoid circular imports at module import time
 # (we'll import it inside gererateCode)
@@ -140,10 +141,14 @@ def newControlsTab():
 
 def gererateCode():
     print("Generating code...")
-    # Import Logic here to avoid circular imports during module import
-    import Logic
-    # Pass shooterTabs into the logic call
-    Logic.print_logic_info(shooterTabs, projectName=input_ProjectName.get())
+
+    if (input_ProjectName.get() == ""):
+        messagebox.showerror("Error", "Please enter a project name before generating code.")
+    else:
+        # Import Logic here to avoid circular imports during module import
+        import Logic
+        # Pass shooterTabs into the logic call
+        Logic.print_logic_info(shooterTabs, projectName=input_ProjectName.get())
 
 
 def climberTopEntry(climberNum):
